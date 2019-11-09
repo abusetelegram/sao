@@ -2,7 +2,7 @@ const update = require('./update')
 const schedule = require('node-schedule')
 
 // Init
-schedule.scheduleJob('* * * * *', update)
+schedule.scheduleJob('0 * * * *', update)
 
 // Wait for database init
 update().then(res => {
