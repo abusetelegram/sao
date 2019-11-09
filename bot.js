@@ -9,7 +9,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN)
 const userId = parseInt(process.env.TELEGRAM_USER_ID)   
 const botName = process.env.BOT_NAME
 // Sticker
-const file_id_xq = 'AAQFAAN_AQACRrbHCBwFU3dI7P6X6LEZMwAEAQAHbQAD1gMAAhYE'
+const file_id_xq = 'CAADBQADfwEAAka2xwgcBVN3SOz-lxYE'
 
 const random = function() {
     let w = dataDB.get('words').sample().value()
