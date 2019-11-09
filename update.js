@@ -23,33 +23,37 @@ function setHash() {
     hashDB.set('hash', h)
         .set('last_update', date)
         .write()
+    console.log(`Hash set with ${h}`)
 }
 
 // Init
 module.exports = function () {
-    if (data.length === 0) {
-        await gists.get(gid)
+    console.log('Reading DB...')
+    dataDB.read() // Get latest state
+    if (dataDB.get('words').value().length === 0) {
+        return gists.get(gid)
             .then(res => {
-                dataDB.set('words', res.files[filename].content).write()
+                dataDB.set('words', JSON.parse(res.body.files[filename].content)).write()
                 setHash()
                 console.log('Init Database Successfully!')
+                return true
             })
             .catch(console.error)
     } else {
-        if (!verifyHash()) {
-            // File Updated
-            let c = dataDB.get(words).value()
-            if (hashDB.get('hash').value() !== hash(c)) {
-                update = { file: {} }
-                update[filename] = {
-                    context: c
-                }
-                gists.edit(gid, update).then(res => {
-                    setHash()
-                    console.log(`Gist updated at ${hashDB.get('last_update').value()}`)
-                }).catch(console.error)
+        console.log('Update Started')
+        let c = dataDB.get('words').value()
+        if (hashDB.get('hash').value() !== hash(c)) {
+            let update = { files: {} }
+            update.files[filename] = {
+                content: JSON.stringify(c, null, 2)
             }
+            return gists.edit(gid, update).then(res => {
+                setHash()
+                console.log(`Gist updated at ${hashDB.get('last_update').value()}`)
+                return true
+            }).catch(console.error)
+        } else {
+            console.log(`File Unchanged`)
         }
-        console.log('Daily Routine Finished') // I know here is a promise but I am lazy XD
     }
 }

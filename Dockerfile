@@ -8,8 +8,9 @@ ENV BOT_TOKEN=
 ENV BOT_NAME=
 ENV TELEGRAM_USER_ID=
 
-COPY . /opt/app
-WORKDIR /opt/app
+WORKDIR /usr/src/app
+COPY . .
+
 RUN yarn
 
-CMD yarn serve
+CMD ["node", "main.js"]

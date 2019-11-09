@@ -1,10 +1,12 @@
 const update = require('./update')
-const bot = require('./bot')
 const schedule = require('node-schedule')
 
 // Init
-update()
-schedule.scheduleJob('0 0 * * *', update())
+schedule.scheduleJob('* * * * *', update)
 
-// Start
-bot.launch()
+// Wait for database init
+update().then(res => {
+    console.log('Bot Started')
+    const bot = require('./bot')
+    bot.launch()
+})
