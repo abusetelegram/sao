@@ -9,4 +9,7 @@ update().then(res => {
     console.log('Bot Started')
     const bot = require('./bot')
     bot.launch()
+}).catch(e => {
+    console.log(e)
+    process.exit(1)
 })
