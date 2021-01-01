@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:current-buster
 
 ENV GITHUB_USERNAME=
 ENV GITHUB_PASSWORD=
